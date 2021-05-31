@@ -1,18 +1,17 @@
 module.exports = {
     owners: ["ALL", "OWNER", "IDs", "HERE"],
     database: {
-        type: "DATABASE-TYPE-HERE", // can be one of quickdb, mongodb
-        uri: "DATABASE://URI:HERE" // if you use quick.db, delete this line
+        uri: "MONGODB://URI:HERE"
     },
     token: "BOT-TOKEN-HERE",
     prefix: "PREFIX-HERE",
     color: {
-        positive: "GREEN", // #2ECC71
-        negative: "RED" // #E74C3C
+        positive: "GREEN",
+        negative: "RED"
     },
     emoji: {
-        positive: ":green_circle:", // For custom server emojis, use "<:emojiName:emojiID>"
-        negative: ":red_circle:" // which you can get by typing "\:emojiName:"
+        positive: ":green_circle:",
+        negative: ":red_circle:"
     },
     footer: "EMBED-FOOTER"
 };
