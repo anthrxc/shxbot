@@ -1,7 +1,7 @@
 {
-  "name": "discordjs-template-bot",
-  "version": "2.1.1",
-  "description": "A template Discord bot made using the discord.js library.",
+  "name": "shxbot",
+  "version": "1.0.0",
+  "description": "shxbot is a Discord bot for uploading images to sxcu.net",
   "main": "src/index.js",
   "scripts": {
     "test": "nodemon .",
@@ -9,26 +9,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aanthr0/discordjs-template-bot.git"
+    "url": "git+https://github.com/aanthr0/shxbot.git"
   },
   "keywords": [
-    "discord",
     "discord-bot",
     "discord-js",
-    "template-repository",
-    "template-discord-bot",
-    "template-bot"
+    "sharex-uploader",
+    "sxcu"
   ],
   "author": "aanthr0",
   "license": "GPL-3.0 License",
   "bugs": {
-    "url": "https://github.com/aanthr0/discordjs-template-bot/issues"
+    "url": "https://github.com/aanthr0/shxbot/issues"
   },
-  "homepage": "https://github.com/aanthr0/discordjs-template-bot#readme",
+  "homepage": "https://github.com/aanthr0/shxbot#readme",
   "devDependencies": {
     "nodemon": "^2.0.7"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "discord.js": "^12.5.3",
     "mongoose": "^5.12.7",
     "quick.db": "^7.1.3"
