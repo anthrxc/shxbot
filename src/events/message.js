@@ -16,7 +16,7 @@ module.exports = async(client, message) => {
             .setColor(color.positive)
             .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
             .setTitle("Hello! :smile:")
-            .setDescription(`I'm oversight. I'm a guild manager bot created by <@!${owners[0]}>\nSadly, my commands aren't open to the general public.`)
+            .setDescription(`I'm shxbot, a Discord image uploader bot created by <@!${owners[0]}>.\nMy prefix is \`shx \` (there's a space at the end!).\nTo get started, please use the \`setup\` command in my DMs.`)
             .setFooter(footer)
         );
         return;
