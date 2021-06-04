@@ -30,6 +30,7 @@
     "axios": "^0.21.1",
     "discord.js": "^12.5.3",
     "mongoose": "^5.12.7",
-    "quick.db": "^7.1.3"
+    "request": "^2.88.2",
+    "sxcu.js": "^1.0.2"
   }
 }
