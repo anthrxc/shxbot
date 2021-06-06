@@ -12,7 +12,8 @@ module.exports.run = async(client, message, args) => {
             .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
             .setTitle(`${emoji.negative} Error!`)
             .setDescription("Invalid domain! Please make sure that you type in the `https://` part too!\nIf you are using a private domain, make sure you provide the domain's token after the domain itself.")
-        )
+            .setFooter(footer)
+        );
         return;
     }
     if(!args[0].endsWith("/upload")) {
@@ -55,7 +56,7 @@ module.exports.run = async(client, message, args) => {
                 .setColor(color.positive)
                 .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
                 .setTitle(`${emoji.positive} Success!`)
-                .setDescription(`Successfully saved your information.\n${!args[1] ? "*Note: If you provided a private subdomain, you need to re-run this command and provide the subdomain's token or you won't be able to upload images!*" : ""}`)
+                .setDescription(`Successfully saved your information.\n\n${!args[1] ? "*Note: If you provided a private subdomain, you need to re-run this command and provide the subdomain's token or you won't be able to upload images!*" : ""}`)
                 .setFooter(footer)
             );
         }
