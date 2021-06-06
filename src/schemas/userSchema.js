@@ -8,11 +8,16 @@ const optStr = {
     type: String,
     required: false
 };
+const date = {
+    type: Date,
+    required: true
+}
 
-const configSchema = Schema({
+const userSchema = Schema({
     _id: reqStr,
     url: reqStr,
-    token: optStr
+    token: optStr,
+    expires: date
 });
 
-module.exports = model("userinfo", configSchema);
+module.exports = model("user", userSchema);
