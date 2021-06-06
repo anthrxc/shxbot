@@ -22,13 +22,16 @@ module.exports.run = async(client, message, args) => {
     
     if(!args[1]) args[1] = undefined;
 
-    const date = new Date()
+    const date = new Date();
+    date.setMonth(date.getMonth() + 1);
+    date.setHours(0, 0, 0, 0);
+
     await userSchema.findByIdAndUpdate(
         author.id,
         {
             url: args[0],
             token: args[1],
-            expires: date.setMonth(date.getMonth() + 1)
+            expires: date
         },
         {
             upsert: true,
