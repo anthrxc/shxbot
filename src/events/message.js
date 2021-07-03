@@ -16,7 +16,7 @@ module.exports = async(client, message) => {
             .setColor(color.positive)
             .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
             .setTitle("Hello! :smile:")
-            .setDescription(`I'm shxbot, a Discord image uploader bot created by <@!${owners[0]}>.\nMy prefix is \`shx \` (there's a space at the end!).\nTo get started, please use the \`setup\` command in my DMs.`)
+            .setDescription(`I'm shxbot, a Discord image uploader bot created by [aanthr0#7001](https://discord.com/invite/NKsX8CYtjH "Support Server").\nMy prefix is \`shx \` (there's a space at the end!).\nTo get started, please use the \`setup\` command in my DMs.`)
             .setFooter(footer)
         );
         return;
@@ -32,7 +32,7 @@ module.exports = async(client, message) => {
     else if(client.aliases.has(cmd)) command = client.commands.get(client.aliases.get(cmd));
 
     if(!command) return;
-    const { name, ownerOnly, requiredPerms, requiredRoles, minArgs, maxArgs, usage, dm } = command.help;
+    const { name, ownerOnly, requiredPerms, minArgs, maxArgs, usage, dm } = command.help;
 
     if(ownerOnly == true && !owners.includes(author.id)) {
         channel.send(
@@ -77,23 +77,6 @@ module.exports = async(client, message) => {
                     .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
                     .setTitle(`${emoji.negative} Error!`)
                     .addField("Invalid permissions", `You need to have the \`${perm}\` permission to run this command!`)
-                    .setFooter(footer)
-                );
-                return;
-            };
-        };
-    };
-    if(requiredRoles && requiredRoles.length) {
-        for(const role of requiredRoles) {
-            const req = guild.roles.cache.get(role);
-
-            if(!member.roles.cache.get(req.id)) {
-                channel.send(
-                    new MessageEmbed()
-                    .setColor(color.negative)
-                    .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-                    .setTitle(`${emoji.negative} Error!`)
-                    .addField("Invalid roles", `You need to have the \`${req.name}\` role to run this command!`)
                     .setFooter(footer)
                 );
                 return;
