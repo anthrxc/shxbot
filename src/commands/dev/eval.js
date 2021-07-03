@@ -1,28 +1,37 @@
-module.exports.run = async(client, message, args) => {
-    const { channel } = message;
+const { MessageEmbed } = require("discord.js");
 
-    const clean = text => {
-        if(typeof text === "string") return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-        else return text;
-    };
-
+module.exports.run = async (client, message, args) => {
+    const { color, emoji, footer } = client.config;
+    const { guild, channel, author, member, content, mentions, type } = message;
+    
     try {
-        const code = args.join(" ");
-        let evaled = eval(code);
-
-        if(typeof evaled !== "string") evaled = require("util").inspect(evaled);
-        if(evaled == client.token) evaled = "did you really think i'd let you do that";
-        channel.send(clean(evaled), { code: "xl" });
-
-    } 
-    catch (err) {
-        message.channel.send(`\`\`\`xl\n${clean(err)}\n\`\`\``);
+        let code = args.join(' ');
+        
+        let res = eval(code);
+        if(res == client.token) res = 'aG93IGR1bWIgYXJlIHlvdT8gZGlkIHlvdSB0aGluayBpZCBsZWFrIHRoZSB0b2tlbj8=\n*tip: go to https://base64decode.org/ :)*';
+        
+        channel.send(
+            new MessageEmbed()
+            .setColor(color.green)
+            .setTitle(`${emoji.positive} Output:`)
+            .setDescription(`\`\`\`js\n${res}\n\`\`\``)
+        );
+    } catch (e) {
+        channel.send(
+            new MessageEmbed()
+            .setColor(color.red)
+            .setAuthor(`${author.username}#${author.discriminator}`, author.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }))
+            .setThumbnail(logo)
+            .setTitle(`${emoji.negative} Error!`)
+            .setDescription(`${e.name}: ${e.message}`)
+            .setFooter(footer)
+        );
     };
 };
 
 module.exports.help = {
     name: "eval",
-    description: "Executes JavaScript code. Because of the nature of the command, it is limited to bot owners.",
+    description: "Executes JavaScript code.",
     aliases: "evaluate",
     ownerOnly: true,
     usage: "<valid JavaScript code>",
