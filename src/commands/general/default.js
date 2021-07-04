@@ -1,23 +1,25 @@
-const guildSchema = require("../../schemas/guildSchema");
+const guildConfig = require("../../models/guild");
 const { MessageEmbed } = require("discord.js");
+const { fetchDomains } = require("sxcu.js");
 
 module.exports.run = async(client, message, args) => {
     const { color, emoji, footer } = client.config;
     const { guild, channel, author, member } = message;
-
-    if(!args[0]) {
-        const guildConfig = await guildSchema.findById(guild.id);
-        
+    
+    let domain = args[0];
+    const { url } = await guildConfig.findById(guild.id);
+    
+    if(!domain) {
         const embed = new MessageEmbed()
             .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
             .setFooter(footer);
         
-        if(guildConfig.url) {
+        if(url) {
             channel.send(
                 embed
                 .setColor(color.positive)
                 .setTitle(`${emoji.positive} Success!`)
-                .setDescription(`The default domain for this server is \`${guildConfig.url.slice(0, -6)}\``)
+                .setDescription(`The default domain for this server is \`${url.slice(0, -7)}\``)
             );
         }
         else {
@@ -34,7 +36,7 @@ module.exports.run = async(client, message, args) => {
             channel.send(embed);
         };
     };
-    if(args[0]) {
+    if(domain) {
         if(!member.hasPermission("MANAGE_GUILD")) {
             channel.send(
                 new MessageEmbed()
@@ -46,28 +48,58 @@ module.exports.run = async(client, message, args) => {
             );
             return;
         };
-        if(!args[0].startsWith("https")) {
+        if(domain == url) {
+            console.log("no");
+            return;
+        };
+
+
+        if(domain.startsWith("http://")) domain = domain.replace("http://", "https://");
+        if(domain.startsWith("https://")) domain = domain.slice(8);
+        if(domain.indexOf("/") > -1) domain = domain.slice(0, domain.indexOf("/"));
+    
+        const domains = await fetchDomains().catch(err => {
             channel.send(
                 new MessageEmbed()
                 .setColor(color.negative)
                 .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
                 .setTitle(`${emoji.negative} Error!`)
-                .addField("Invalid URL", "The URL you provided is not valid.\nMake sure it starts with `https://`!")
+                .setDescription("An internal error has occured, please try again later.")
+                .setFooter(footer)
+            );
+            console.log(err);
+            return;
+        });
+
+        domain = domains.find(d => d.getDomain() === domain) || null;
+
+        if(domain === null) {
+            channel.send(
+                new MessageEmbed()
+                .setColor(color.negative)
+                .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+                .setTitle(`${emoji.negative} Error!`)
+                .addField("Invalid URL", "The URL you provided is not an existing [sxcu.net](https://sxcu.net/) domain.")
+                .setFooter(footer)
+            );
+            return;
+        };
+    
+        if(domain.isPublic() === 0) {
+            channel.send(
+                new MessageEmbed()
+                .setColor(color.negative)
+                .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+                .setTitle(`${emoji.negative} Error!`)
+                .addField("Unsupported domain", "Server default domains cannot be private.\nPlease provide a public domain.")
                 .setFooter(footer)
             );
             return;
         };
         
-        let url;
-        if(args[0].endsWith("/upload"));
-        else {
-            if(!args[0].endsWith("/")) url = `${args[0]}/upload`;
-            else url = `${args[0]}upload`;
-        };
-
-        guildSchema.findByIdAndUpdate(guild.id, {
+        guildConfig.findByIdAndUpdate(guild.id, {
             _id: guild.id,
-            url: url
+            url: `${domain.meta_data.domain}/upload`
         },
         {
             upsert: true
@@ -90,8 +122,8 @@ module.exports.run = async(client, message, args) => {
                 .setColor(color.positive)
                 .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
                 .setTitle(`${emoji.positive} Success!`)
-                .setDescription(`The default domain for \`${guild}\` is now \`${args[0].endsWith("/") ? args[0] : `${args[0]}/`}\`!\nPlease make sure that the domain you provided is public. If you provided a private domain, users won't be able to upload images!`)
-                .setFooter(footer)                
+                .setDescription(`The default domain for \`${guild}\` is now \`${domain.meta_data.domain}\`!`)
+                .setFooter(footer)
             );
         });
     };
