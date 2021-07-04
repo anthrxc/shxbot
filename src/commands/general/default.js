@@ -15,17 +15,22 @@ module.exports.run = async(client, message, args) => {
             .setFooter(footer);
         
         if(url) {
-            channel.send(
-                embed
-                .setColor(color.positive)
-                .setTitle(`${emoji.positive} Success!`)
-                .setDescription(`The default domain for this server is \`${url.slice(0, -7)}\``)
-            );
+            embed
+            .setColor(color.positive)
+            .setTitle(`${emoji.positive} Success!`);
+            
+            if(member.hasPermission("MANAGE_GUILD")) {
+                embed.setDescription(`The default domain for this server is \`${url.slice(0, -7)}\`.\nYou can change the domain by running \`shx default [domain]\`. Make sure that the domain you provide is public!`)
+            }
+            else {
+                embed.setDescription(`The default domain for this server is \`${url.slice(0, -7)}\``)
+            };
+            channel.send(embed);
         }
         else {
             embed
             .setColor(color.positive)
-            .setTitle(`${emoji.positive} Success!`)
+            .setTitle(`${emoji.positive} Success!`);
 
             if(member.hasPermission("MANAGE_GUILD")) {
                 embed.setDescription(`There is no default domain for this server.\nYou can set one by running \`shx default [domain]\`. Make sure that the domain you provide is public!`)
