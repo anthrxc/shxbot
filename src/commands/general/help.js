@@ -45,6 +45,7 @@ module.exports.run = async(client, message, args) => {
                 .setColor(color.positive)
                 .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
                 .setTitle(`${emoji.positive} Help - ${args[0].toLocaleUpperCase()}`)
+                .setDescription("<REQUIRED> ​ ​ ​ ​ ​ ​ ​ | ​ ​ ​ ​ ​ ​ ​ [OPTIONAL]")
                 .setFooter(footer);
 
             const commands = readdirSync(dir).filter(f => f.endsWith(".js"));
