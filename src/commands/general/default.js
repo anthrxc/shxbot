@@ -7,23 +7,23 @@ module.exports.run = async(client, message, args) => {
     const { guild, channel, author, member } = message;
     
     let domain = args[0];
-    const { url } = await guildConfig.findById(guild.id);
+    const g_conf = await guildConfig.findById(guild.id);
     
     if(!domain) {
         const embed = new MessageEmbed()
             .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
             .setFooter(footer);
         
-        if(url) {
+        if(g_conf.url) {
             embed
             .setColor(color.positive)
             .setTitle(`${emoji.positive} Success!`);
             
             if(member.hasPermission("MANAGE_GUILD")) {
-                embed.setDescription(`The default domain for this server is \`${url.slice(0, -7)}\`.\nYou can change the domain by running \`shx default [domain]\`. Make sure that the domain you provide is public!`)
+                embed.setDescription(`The default domain for this server is \`${g_conf.url.slice(0, -7)}\`.\nYou can change the domain by running \`shx default [domain]\`. Make sure that the domain you provide is public!`)
             }
             else {
-                embed.setDescription(`The default domain for this server is \`${url.slice(0, -7)}\``)
+                embed.setDescription(`The default domain for this server is \`${g_conf.url.slice(0, -7)}\``)
             };
             channel.send(embed);
         }
@@ -53,8 +53,15 @@ module.exports.run = async(client, message, args) => {
             );
             return;
         };
-        if(domain == url) {
-            console.log("no");
+        if(domain == g_conf.url) {
+            channel.send(
+                new MessageEmbed()
+                .setColor(color.negative)
+                .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+                .setTitle(`${emoji.negative} Error!`)
+                .addField("Same URL", "The URL you provided is the same as the current default URL!")
+                .setFooter(footer)
+            );
             return;
         };
 
