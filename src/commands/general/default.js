@@ -53,15 +53,18 @@ module.exports.run = async(client, message, args) => {
             );
             return;
         };
-        if(domain == g_conf.url) {
-            channel.send(
-                new MessageEmbed()
-                .setColor(color.negative)
-                .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
-                .setTitle(`${emoji.negative} Error!`)
-                .addField("Same URL", "The URL you provided is the same as the current default URL!")
-                .setFooter(footer)
-            );
+
+        if(g_conf) {
+            if(domain == g_conf.url) {
+                channel.send(
+                    new MessageEmbed()
+                    .setColor(color.negative)
+                    .setAuthor(author.tag, author.displayAvatarURL({ format: "png", dynamic: true, size: 1024 }))
+                    .setTitle(`${emoji.negative} Error!`)
+                    .addField("Same URL", "The URL you provided is the same as the current default URL!")
+                    .setFooter(footer)
+                );
+            };
             return;
         };
 
