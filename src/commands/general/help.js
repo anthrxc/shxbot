@@ -52,7 +52,7 @@ module.exports.run = async(client, message, args) => {
             commands.forEach(command => {
                 const cmd = require(`${dir}${sep}${command}`);
                 
-                if(cmd.help.name == "help") continue;
+                if(cmd.help.name == "help") return;
                 
                 let maxArgs;
                 if(cmd.help.maxArgs === -1) maxArgs = "Unlimited";
