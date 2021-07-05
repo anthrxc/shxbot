@@ -50,7 +50,8 @@ module.exports.run = async(client, message, args) => {
             const commands = readdirSync(dir).filter(f => f.endsWith(".js"));
             commands.forEach(command => {
                 const cmd = require(`${dir}${sep}${command}`);
-                    
+                
+                if(cmd.help.name == "help") continue;
                 let maxArgs;
                 if(cmd.help.maxArgs === -1) maxArgs = "Unlimited";
                 else maxArgs = cmd.help.maxArgs;
