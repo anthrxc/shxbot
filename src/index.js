@@ -1,6 +1,6 @@
 const { Client, Collection } = require("discord.js");
 const client = new Client({ disableMentions: "everyone" });
-const mongoose = require("mongoose");
+const { connect } = require("mongoose");
 
 client.config = require("./config.js");
 ["commands", "aliases"].forEach(x => client[x] = new Collection());
@@ -8,7 +8,7 @@ client.config = require("./config.js");
 require("./handlers/command.js")(client);
 require("./handlers/event.js")(client);
 
-mongoose.connect(client.config.database.uri, {
+connect(client.config.database.uri, {
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true
